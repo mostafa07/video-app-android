@@ -1,4 +1,4 @@
-package com.example.android.videoapp.util
+package com.example.android.videoapp.extension
 
 import android.app.Activity
 import android.view.View

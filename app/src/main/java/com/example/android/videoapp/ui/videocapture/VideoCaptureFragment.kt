@@ -14,12 +14,15 @@ import androidx.camera.core.CameraSelector
 import androidx.camera.core.Preview
 import androidx.camera.lifecycle.ProcessCameraProvider
 import androidx.camera.video.*
+import androidx.concurrent.futures.await
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.lifecycleScope
 import com.example.android.videoapp.R
 import com.example.android.videoapp.databinding.FragmentVideoCaptureBinding
+import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
@@ -33,11 +36,14 @@ class VideoCaptureFragment : Fragment() {
 
     private var videoCapture: VideoCapture<Recorder>? = null
     private var recording: Recording? = null
+    private var isAudioEnabled = false
 
-    // TODO use for UI
-    private lateinit var recordingState: VideoRecordEvent
-
-    private lateinit var cameraExecutor: ExecutorService
+    private val mainThreadExecutor by lazy {
+        ContextCompat.getMainExecutor(requireContext())
+    }
+    private val cameraExecutor: ExecutorService by lazy {
+        Executors.newSingleThreadExecutor()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -66,8 +72,6 @@ class VideoCaptureFragment : Fragment() {
                 REQUEST_CODE_PERMISSIONS
             )
         }
-
-        cameraExecutor = Executors.newSingleThreadExecutor()
     }
 
     override fun onDestroyView() {
@@ -121,10 +125,10 @@ class VideoCaptureFragment : Fragment() {
                         Manifest.permission.RECORD_AUDIO
                     ) == PermissionChecker.PERMISSION_GRANTED
                 ) {
-                    withAudioEnabled()
+                    if (isAudioEnabled) withAudioEnabled()
                 }
             }
-            .start(ContextCompat.getMainExecutor(requireContext())) { recordEvent ->
+            .start(mainThreadExecutor) { recordEvent ->
                 when (recordEvent) {
                     is VideoRecordEvent.Start -> {
                         viewBinding.videoCaptureButton.apply {
@@ -154,10 +158,8 @@ class VideoCaptureFragment : Fragment() {
     }
 
     private fun startCamera() {
-        val cameraProviderFuture = ProcessCameraProvider.getInstance(requireActivity())
-
-        cameraProviderFuture.addListener({
-            val cameraProvider: ProcessCameraProvider = cameraProviderFuture.get()
+        viewLifecycleOwner.lifecycleScope.launch {
+            val cameraProvider = ProcessCameraProvider.getInstance(requireContext()).await()
 
             val preview = Preview.Builder()
                 .build()
@@ -188,7 +190,7 @@ class VideoCaptureFragment : Fragment() {
             } catch (ex: Exception) {
                 Timber.e(ex, "Use Case binding failed")
             }
-        }, ContextCompat.getMainExecutor(requireContext()))
+        }
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
