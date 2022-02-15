@@ -48,6 +48,14 @@ class VideoCaptureFragment : Fragment() {
 
         viewBinding.lifecycleOwner = viewLifecycleOwner
 
+        return viewBinding.root
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        initUi()
+
         // Request camera permissions
         if (allPermissionsGranted()) {
             startCamera()
@@ -60,31 +68,6 @@ class VideoCaptureFragment : Fragment() {
         }
 
         cameraExecutor = Executors.newSingleThreadExecutor()
-
-        setUpButtonClickListeners()
-
-
-
-        return viewBinding.root
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-
-//        // Request camera permissions
-//        if (allPermissionsGranted()) {
-//            startCamera()
-//        } else {
-//            ActivityCompat.requestPermissions(
-//                requireActivity(),
-//                REQUIRED_PERMISSIONS,
-//                REQUEST_CODE_PERMISSIONS
-//            )
-//        }
-//
-//        cameraExecutor = Executors.newSingleThreadExecutor()
-//
-//        setUpButtonClickListeners()
     }
 
     override fun onDestroyView() {
@@ -94,6 +77,14 @@ class VideoCaptureFragment : Fragment() {
         cameraExecutor.shutdown()
     }
 
+
+    private fun initUi() {
+        setUpButtonClickListeners()
+    }
+
+    private fun setUpButtonClickListeners() {
+        viewBinding.videoCaptureButton.setOnClickListener { captureVideo() }
+    }
 
     private fun captureVideo() {
         val videoCapture = videoCapture ?: return
@@ -113,7 +104,7 @@ class VideoCaptureFragment : Fragment() {
             put(MediaStore.MediaColumns.DISPLAY_NAME, name)
             put(MediaStore.MediaColumns.MIME_TYPE, "video/mp4")
             if (Build.VERSION.SDK_INT > Build.VERSION_CODES.P) {
-                put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/VideoApp-Video")
+                put(MediaStore.Video.Media.RELATIVE_PATH, "Movies/CameraX-Video")
             }
         }
 
@@ -133,7 +124,7 @@ class VideoCaptureFragment : Fragment() {
                     withAudioEnabled()
                 }
             }
-            .start(ContextCompat.getMainExecutor(requireActivity())) { recordEvent ->
+            .start(ContextCompat.getMainExecutor(requireContext())) { recordEvent ->
                 when (recordEvent) {
                     is VideoRecordEvent.Start -> {
                         viewBinding.videoCaptureButton.apply {
@@ -145,7 +136,7 @@ class VideoCaptureFragment : Fragment() {
                         if (!recordEvent.hasError()) {
                             val msg =
                                 "Video capture succeeded: " + "${recordEvent.outputResults.outputUri}"
-                            Toast.makeText(requireActivity().baseContext, msg, Toast.LENGTH_SHORT)
+                            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT)
                                 .show()
                             Timber.d(msg)
                         } else {
@@ -188,16 +179,21 @@ class VideoCaptureFragment : Fragment() {
 
             try {
                 cameraProvider.unbindAll()
-                cameraProvider.bindToLifecycle(this, cameraSelector, preview, videoCapture)
+                cameraProvider.bindToLifecycle(
+                    viewLifecycleOwner,
+                    cameraSelector,
+                    preview,
+                    videoCapture
+                )
             } catch (ex: Exception) {
                 Timber.e(ex, "Use Case binding failed")
             }
-        }, ContextCompat.getMainExecutor(requireActivity()))
+        }, ContextCompat.getMainExecutor(requireContext()))
     }
 
     private fun allPermissionsGranted() = REQUIRED_PERMISSIONS.all {
         ContextCompat.checkSelfPermission(
-            requireActivity().baseContext,
+            requireContext(),
             it
         ) == PackageManager.PERMISSION_GRANTED
     }
@@ -214,16 +210,12 @@ class VideoCaptureFragment : Fragment() {
         } else {
             Toast.makeText(
                 requireContext(),
-                "Permissions not granted by ther user.",
+                "Permissions not granted by the user.",
                 Toast.LENGTH_SHORT
             ).show()
 
             // TODO navigate to other screen or show toast
         }
-    }
-
-    private fun setUpButtonClickListeners() {
-        viewBinding.videoCaptureButton.setOnClickListener { captureVideo() }
     }
 
 
