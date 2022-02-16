@@ -1,6 +1,18 @@
 <resources>
     <string name="app_name">Video App</string>
 
+    <!-- Login Fragment -->
+    <string name="email">Email</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="forgot_password_question_mark">Forgot Password?</string>
+    <string name="create_account">Create Account</string>
+    <string name="please_enter_your_login_credentials">Please enter your login credentials</string>
+
+    <!-- Video Capture Fragment -->
     <string name="start_capture">Start Capture</string>
     <string name="stop_capture">Stop Capture</string>
+
+    <!-- Common -->
+    <string name="operation_failed">Operation failed</string>
 </resources>
