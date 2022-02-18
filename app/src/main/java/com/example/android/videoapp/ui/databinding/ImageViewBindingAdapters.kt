@@ -68,3 +68,17 @@ fun setImage(imageView: ImageView, imageDrawable: Drawable?) {
         .load(imageDrawable)
         .into(imageView)
 }
+
+
+@BindingAdapter("imageUriAsBitmap")
+fun setImageBitmap(imageView: ImageView, imageUrl: String?) {
+    Glide.with(imageView.rootView.context)
+        .setDefaultRequestOptions(
+            RequestOptions()
+                .placeholder(R.drawable.ic_broken_image)
+                .error(R.drawable.ic_broken_image)
+        )
+        .asBitmap()
+        .load(imageUrl)
+        .into(imageView)
+}

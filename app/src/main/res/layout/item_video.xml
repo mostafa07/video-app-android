@@ -20,6 +20,7 @@
             android:paddingStart="16dp"
             android:paddingEnd="16dp">
 
+            <!-- TODO add an overlay transparent image to indicate it is a video -->
             <com.google.android.material.imageview.ShapeableImageView
                 android:id="@+id/video_image_view"
                 android:layout_width="0dp"
@@ -30,12 +31,12 @@
                 android:contentDescription="@{video.title}"
                 android:cropToPadding="false"
                 android:scaleType="centerCrop"
+                app:imageUriAsBitmap="@{video.localPath}"
                 app:layout_constraintDimensionRatio="h,4:3"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize8dp"
-                app:srcCompat="@drawable/ic_videocam"
                 tools:src="@tools:sample/backgrounds/scenic" />
 
             <com.google.android.material.textview.MaterialTextView
