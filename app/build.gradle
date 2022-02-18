@@ -74,6 +74,13 @@ dependencies {
     // Concurrent Futures KTX
     implementation "androidx.concurrent:concurrent-futures-ktx:$version_concurrent_futures_ktx"
 
+    // Room
+    implementation "androidx.room:room-runtime:$version_room"
+    kapt "androidx.room:room-compiler:$version_room"
+
+    // Room KTX
+    implementation "androidx.room:room-ktx:$version_room"
+
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$version_retrofit"
 
@@ -93,6 +100,7 @@ dependencies {
     // Shimmer Effect Layout
     implementation "com.facebook.shimmer:shimmer:$version_shimmer_layout"
 
+    // Testing
     testImplementation "junit:junit:$version_junit"
     androidTestImplementation "androidx.test.ext:junit:$version_android_junit"
     androidTestImplementation "androidx.test.espresso:espresso-core:$version_espresso_core"

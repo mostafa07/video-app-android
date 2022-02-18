@@ -48,7 +48,7 @@ class LoginFragment : Fragment() {
     private fun setupViewModelObservations() {
         viewModel.hasUserLoggedIn.observe(viewLifecycleOwner) { hasLoggedIn ->
             if (hasLoggedIn) {
-                findNavController().navigate(R.id.action_loginFragment_to_videoCaptureFragment)
+                findNavController().navigate(R.id.action_loginFragment_to_videoGalleryFragment)
             } else {
                 Toast.makeText(
                     requireContext(),

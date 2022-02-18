@@ -12,14 +12,26 @@
         tools:layout="@layout/fragment_login">
 
         <action
-            android:id="@+id/action_loginFragment_to_videoCaptureFragment"
+            android:id="@+id/action_loginFragment_to_videoGalleryFragment"
+            app:destination="@id/videoGalleryFragment" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/videoGalleryFragment"
+        android:name="com.example.android.videoapp.ui.video.VideoGalleryFragment"
+        android:label="fragment_video_gallery"
+        tools:layout="@layout/fragment_video_gallery">
+
+        <action
+            android:id="@+id/action_videoGalleryFragment_to_videoCaptureFragment"
             app:destination="@id/videoCaptureFragment" />
 
     </fragment>
 
     <fragment
         android:id="@+id/videoCaptureFragment"
-        android:name="com.example.android.videoapp.ui.videocapture.VideoCaptureFragment"
+        android:name="com.example.android.videoapp.ui.video.VideoCaptureFragment"
         android:label="VideoCaptureFragment"
         tools:layout="@layout/fragment_video_capture" />
 

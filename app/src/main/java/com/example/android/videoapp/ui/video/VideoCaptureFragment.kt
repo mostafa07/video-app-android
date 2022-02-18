@@ -1,4 +1,4 @@
-package com.example.android.videoapp.ui.videocapture
+package com.example.android.videoapp.ui.video
 
 import android.Manifest
 import android.content.ContentValues
@@ -20,6 +20,7 @@ import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import com.example.android.videoapp.R
 import com.example.android.videoapp.databinding.FragmentVideoCaptureBinding
 import kotlinx.coroutines.launch
@@ -217,6 +218,7 @@ class VideoCaptureFragment : Fragment() {
             ).show()
 
             // TODO navigate to other screen or show toast
+            findNavController().navigateUp()
         }
     }
 

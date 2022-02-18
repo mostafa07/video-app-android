@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <data>
+
+        <variable
+            name="video"
+            type="com.example.android.videoapp.data.model.domain.Video" />
+    </data>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp">
+
+            <com.google.android.material.imageview.ShapeableImageView
+                android:id="@+id/video_image_view"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="16dp"
+                android:layout_marginBottom="16dp"
+                android:adjustViewBounds="false"
+                android:contentDescription="@{video.title}"
+                android:cropToPadding="false"
+                android:scaleType="centerCrop"
+                app:layout_constraintDimensionRatio="h,4:3"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.App.CornerSize8dp"
+                app:srcCompat="@drawable/ic_videocam"
+                tools:src="@tools:sample/backgrounds/scenic" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/video_title_text_view"
+                style="@style/TextAppearance.MaterialComponents.Headline5"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@{video.title}"
+                app:layout_constraintBottom_toTopOf="@id/video_path_text_view"
+                app:layout_constraintEnd_toEndOf="@id/video_image_view"
+                app:layout_constraintStart_toStartOf="@id/video_image_view"
+                app:layout_constraintTop_toBottomOf="@id/video_image_view"
+                app:layout_constraintVertical_chainStyle="packed"
+                tools:text="Test Video Title" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/video_path_text_view"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"
+                android:ellipsize="end"
+                android:singleLine="true"
+                android:text="@{video.localPath}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="@id/video_title_text_view"
+                app:layout_constraintStart_toStartOf="@id/video_title_text_view"
+                app:layout_constraintTop_toBottomOf="@id/video_title_text_view"
+                tools:text="Test headline headline headline" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+</layout>

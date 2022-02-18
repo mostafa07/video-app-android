@@ -13,6 +13,10 @@
     <string name="start_capture">Start Capture</string>
     <string name="stop_capture">Stop Capture</string>
 
+    <!-- Video Gallery Fragment -->
+    <string name="no_videos_available">No Videos Available</string>
+
     <!-- Common -->
     <string name="operation_failed">Operation failed</string>
+    <string name="add">Add</string>
 </resources>
