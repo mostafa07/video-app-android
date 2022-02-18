@@ -4,6 +4,9 @@
 
     <data>
 
+        <variable
+            name="viewModel"
+            type="com.example.android.videoapp.ui.video.VideoViewModel" />
     </data>
 
     <androidx.constraintlayout.widget.ConstraintLayout
@@ -15,6 +18,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
+        <!-- TODO Improve button UI -->
         <com.google.android.material.button.MaterialButton
             android:id="@+id/video_capture_button"
             android:layout_width="128dp"

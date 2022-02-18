@@ -19,6 +19,7 @@ import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import com.example.android.videoapp.R
@@ -34,6 +35,8 @@ class VideoCaptureFragment : Fragment() {
 
     private var _viewBinding: FragmentVideoCaptureBinding? = null
     private val viewBinding get() = _viewBinding!!
+
+    private val viewModel: VideoViewModel by activityViewModels()
 
     private var videoCapture: VideoCapture<Recorder>? = null
     private var recording: Recording? = null
@@ -54,6 +57,7 @@ class VideoCaptureFragment : Fragment() {
         _viewBinding = FragmentVideoCaptureBinding.inflate(inflater, container, false)
 
         viewBinding.lifecycleOwner = viewLifecycleOwner
+        viewBinding.viewModel = viewModel
 
         return viewBinding.root
     }
@@ -139,10 +143,12 @@ class VideoCaptureFragment : Fragment() {
                     }
                     is VideoRecordEvent.Finalize -> {
                         if (!recordEvent.hasError()) {
-                            val msg =
-                                "Video capture succeeded: " + "${recordEvent.outputResults.outputUri}"
-                            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT)
-                                .show()
+                            val fileUri = recordEvent.outputResults.outputUri
+
+                            viewModel.onVideoSaved(fileUri.toString())
+
+                            val msg = "Video capture succeeded: $fileUri"
+                            Toast.makeText(requireContext(), msg, Toast.LENGTH_SHORT).show()
                             Timber.d(msg)
                         } else {
                             recording?.close()

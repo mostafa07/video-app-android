@@ -7,22 +7,11 @@ import com.example.android.videoapp.data.model.domain.Video
 @Entity(tableName = "VIDEO")
 data class VideoEntity(
     @PrimaryKey(autoGenerate = true)
-    val id: Int,
-    val remoteUrl: String,
+    val id: Int = 0,
+    val remoteUrl: String?,
     val localPath: String,
-    val title: String
-) {
-    constructor(
-        remoteUrl: String,
-        localPath: String,
-        title: String
-    ) : this(
-        id = Int.MIN_VALUE,
-        remoteUrl = remoteUrl,
-        localPath = localPath,
-        title = title
-    )
-}
+    val title: String?
+)
 
 
 fun List<VideoEntity>.toDomainModel(): List<Video> {

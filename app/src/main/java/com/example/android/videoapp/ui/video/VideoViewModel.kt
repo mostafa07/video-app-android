@@ -58,6 +58,14 @@ class VideoViewModel(application: Application) : AndroidViewModel(application) {
     }
 
 
+    fun onVideoSaved(fileUri: String) {
+        viewModelScope.launch {
+            val video = Video(localPath = fileUri, remoteUrl = null, title = "")
+            videoRepository.insertVideo(video)
+        }
+    }
+
+
     private fun setSuccessMessage(message: CustomMessage) {
         _successMessage.value = message
     }
